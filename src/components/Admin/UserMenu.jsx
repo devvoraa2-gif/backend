@@ -22,6 +22,7 @@ const UserMenu = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
     navigate("/login");
   };
 

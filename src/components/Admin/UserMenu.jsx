@@ -29,7 +29,7 @@ const UserMenu = () => {
   if (!user) return null;
 
   return (
-    <div className="relative">
+    <div className="fixed bottom-0 py-4">
       {/* Trigger */}
       <button
         onClick={() => setOpen(!open)}
@@ -41,7 +41,7 @@ const UserMenu = () => {
 
       {/* Dropdown */}
       {open && (
-        <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow border p-1">
+        <div className="absolute left-0 top-[-60%] mt-2 w-48 bg-white rounded-lg shadow border p-1">
           {/* <button
             onClick={() => navigate("/admin")}
             className="flex items-center w-full px-3 py-2 text-left rounded hover:bg-gray-100"

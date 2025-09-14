@@ -29,7 +29,6 @@ const Sidebar = () => {
         {/* Admin + UserMenu in same line */}
         <div className="flex items-center justify-between bg-blue-800 rounded px-3 py-2">
           <h2 className="text-lg font-bold">Admin</h2>
-          <UserMenu sidebar />
         </div>
 
         {/* Links */}
@@ -47,6 +46,7 @@ const Sidebar = () => {
               {link.label}
             </NavLink>
           ))}
+          <UserMenu sidebar />
         </div>
       </div>
 

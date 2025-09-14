@@ -2,6 +2,7 @@ import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import UserMenu from "./UserMenu";
 
 const Sidebar = () => {
   const [open, setOpen] = useState(false);
@@ -24,58 +25,19 @@ const Sidebar = () => {
       </div>
 
       {/* Desktop Sidebar */}
-      <div className="hidden md:flex md:flex-col md:w-64 bg-blue-900 text-white p-4 space-y-2">
-        {links.map((link) => (
-          <NavLink
-            key={link.to}
-            to={link.to}
-            className={({ isActive }) =>
-              `p-3 rounded hover:bg-blue-700 block ${
-                isActive ? "bg-blue-700 font-semibold" : ""
-              }`
-            }
-          >
-            {link.label}
-          </NavLink>
-        ))}
-      </div>
-
-      {/* Mobile Sidebar + Overlay */}
-<AnimatePresence>
-  {open && (
-    <>
-      {/* Overlay with blur */}
-      <motion.div
-        className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        onClick={() => setOpen(false)}
-      />
-
-      {/* Sidebar */}
-      <motion.div
-        initial={{ x: "-100%" }}
-        animate={{ x: 0 }}
-        exit={{ x: "-100%" }}
-        transition={{ duration: 0.3 }}
-        className="fixed top-0 left-0 w-64 h-full bg-blue-900 text-white z-50 flex flex-col"
-      >
-        {/* Sidebar Header with X */}
-        <div className="flex justify-between items-center p-4 border-b border-blue-700">
-          <h2 className="font-bold">Admin</h2>
-          <button onClick={() => setOpen(false)}>
-            <X size={24} />
-          </button>
+      <div className="hidden md:flex md:flex-col md:w-64 bg-blue-900 text-white p-4 space-y-4">
+        {/* Admin + UserMenu in same line */}
+        <div className="flex items-center justify-between bg-blue-800 rounded px-3 py-2">
+          <h2 className="text-lg font-bold">Admin</h2>
+          <UserMenu sidebar />
         </div>
 
-        {/* Sidebar Links */}
-        <div className="flex-1 p-4 space-y-2">
+        {/* Links */}
+        <div className="mt-4 space-y-2">
           {links.map((link) => (
             <NavLink
               key={link.to}
               to={link.to}
-              onClick={() => setOpen(false)}
               className={({ isActive }) =>
                 `p-3 rounded hover:bg-blue-700 block ${
                   isActive ? "bg-blue-700 font-semibold" : ""
@@ -86,11 +48,59 @@ const Sidebar = () => {
             </NavLink>
           ))}
         </div>
-      </motion.div>
-    </>
-  )}
-</AnimatePresence>
+      </div>
 
+      {/* Mobile Sidebar + Overlay */}
+      <AnimatePresence>
+        {open && (
+          <>
+            {/* Overlay */}
+            <motion.div
+              className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setOpen(false)}
+            />
+
+            {/* Sidebar */}
+            <motion.div
+              initial={{ x: "-100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "-100%" }}
+              transition={{ duration: 0.3 }}
+              className="fixed top-0 left-0 w-64 h-full bg-blue-900 text-white z-50 flex flex-col"
+            >
+              {/* Sidebar Header */}
+              <div className="flex justify-between items-center p-4 border-b border-blue-700">
+                <h2 className="font-bold">Admin</h2>
+                <UserMenu sidebar />
+                <button onClick={() => setOpen(false)}>
+                  <X size={24} />
+                </button>
+              </div>
+
+              {/* Links */}
+              <div className="flex-1 p-4 space-y-2">
+                {links.map((link) => (
+                  <NavLink
+                    key={link.to}
+                    to={link.to}
+                    onClick={() => setOpen(false)}
+                    className={({ isActive }) =>
+                      `p-3 rounded hover:bg-blue-700 block ${
+                        isActive ? "bg-blue-700 font-semibold" : ""
+                      }`
+                    }
+                  >
+                    {link.label}
+                  </NavLink>
+                ))}
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </>
   );
 };

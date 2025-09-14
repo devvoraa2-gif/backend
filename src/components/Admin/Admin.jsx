@@ -10,8 +10,8 @@ const Admin = () => {
       <main className="flex-1 bg-white p-4 md:p-6 overflow-x-auto">
         {/* Top bar */}
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-xl md:text-2xl font-bold">Admin Panel</h1>
-          <UserMenu />
+          {/* <h1 className="text-xl md:text-2xl font-bold">Admin Panel</h1> */}
+          {/* <UserMenu /> */}
         </div>
 
         <Outlet />

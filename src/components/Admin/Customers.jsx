@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import Table from "./Table";
 import apiClient from "../../services/apiClient.js";
+import { useLoader } from "../../context/LoaderContext.jsx";
+import { Users, ChevronLeft, ChevronRight } from "lucide-react";
 
 const Customers = () => {
   const headers = ["ID", "Name", "Email", "Phone"];
@@ -8,19 +10,16 @@ const Customers = () => {
   const [page, setPage] = useState(1);
   const [pageSize] = useState(15);
   const [totalPages, setTotalPages] = useState(1);
-
-
+  const { setLoading } = useLoader();
 
   useEffect(() => {
     const fetchCustomers = async () => {
+      setLoading(true);
       try {
         const response = await apiClient.get(
           `/api/v1/customer/paged?pageNumber=${page}&pageSize=${pageSize}`
         );
 
-        console.log("API Response:", response.data);
-
-        // Some APIs wrap in .data, others return flat JSON
         const data = response.data ?? {};
         const items = data.Items ?? [];
 
@@ -30,35 +29,49 @@ const Customers = () => {
         setTotalPages(data.TotalPages ?? 1);
       } catch (error) {
         console.error("Error fetching customers:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchCustomers();
-  }, [page, pageSize]);
+  }, [page, pageSize, setLoading]);
 
   return (
     <div>
-      <h2 className="text-xl font-bold mb-4">Customers</h2>
+      {/* Header Section */}
+      <div className="mb-6">
+        <h2 className="text-2xl font-bold flex items-center gap-2 text-gray-800">
+          <Users className="text-blue-600" size={24} /> Customers
+        </h2>
+        <p className="text-gray-500 text-sm">
+          Manage all your customers in one place
+        </p>
+      </div>
+
+      {/* Table */}
       <Table headers={headers} rows={rows} />
 
       {/* Pagination */}
-      <div className="flex justify-center mt-4 space-x-2">
+      <div className="flex justify-center mt-6 space-x-3">
         <button
           disabled={page === 1}
           onClick={() => setPage((prev) => prev - 1)}
-          className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
+          className="flex items-center gap-1 px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 font-medium shadow-sm hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition"
         >
-          Prev
+          <ChevronLeft size={18} /> Prev
         </button>
-        <span className="px-3 py-1 bg-white border rounded">
+
+        <span className="px-4 py-2 rounded-lg bg-gray-100 text-gray-700 font-semibold shadow-sm">
           Page {page} of {totalPages}
         </span>
+
         <button
           disabled={page === totalPages}
           onClick={() => setPage((prev) => prev + 1)}
-          className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
+          className="flex items-center gap-1 px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 font-medium shadow-sm hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition"
         >
-          Next
+          Next <ChevronRight size={18} />
         </button>
       </div>
     </div>

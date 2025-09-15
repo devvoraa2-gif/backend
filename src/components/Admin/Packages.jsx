@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { Star, Loader2, PlusCircle } from "lucide-react";
+import { PlusCircle, Loader2, Star, Package, ClipboardList } from "lucide-react";
 import apiClient from "../../services/apiClient";
+import { useLoader } from "../../context/LoaderContext.jsx";
 
 const Packages = () => {
+  const { loading, setLoading } = useLoader(); // use global loader
   const [packages, setPackages] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [creating, setCreating] = useState(false);
   const [form, setForm] = useState({
     Name: "",
@@ -43,6 +44,7 @@ const Packages = () => {
   const handleCreate = async (e) => {
     e.preventDefault();
     setCreating(true);
+    setLoading(true); // global loader on
     try {
       await apiClient.post("/api/v1/package/create", form);
       setForm({
@@ -58,23 +60,28 @@ const Packages = () => {
       console.error("Error creating package:", err);
     } finally {
       setCreating(false);
+      setLoading(false); // global loader off
     }
   };
 
   // Mark as Most Popular
   const makeMostPopular = async (id) => {
+    setLoading(true);
     try {
       await apiClient.post(`/api/v1/package/make-most-popular?packageId=${id}`);
       fetchPackages();
     } catch (err) {
       console.error("Error marking most popular:", err);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="w-full">
-      <h1 className="text-2xl font-bold mb-6 text-gray-800">
-        📦 Package Manager
+      {/* Header */}
+      <h1 className="text-2xl font-bold mb-6 text-gray-800 flex items-center gap-2">
+        <Package className="text-blue-600" size={26} /> Package Manager
       </h1>
 
       {/* Create Package Form */}
@@ -82,8 +89,8 @@ const Packages = () => {
         onSubmit={handleCreate}
         className="bg-white p-6 rounded-xl shadow-md space-y-4 mb-10 border border-gray-200"
       >
-        <h2 className="text-lg font-semibold text-gray-700">
-          ➕ Create New Package
+        <h2 className="text-lg font-semibold text-gray-700 flex items-center gap-2">
+          <PlusCircle className="text-green-600" size={20} /> Create New Package
         </h2>
 
         <input
@@ -163,7 +170,9 @@ const Packages = () => {
       </form>
 
       {/* Packages List */}
-      <h2 className="text-xl font-semibold mb-4 text-gray-800">📋 Packages</h2>
+      <h2 className="text-xl font-semibold mb-4 text-gray-800 flex items-center gap-2">
+        <ClipboardList className="text-purple-600" size={22} /> Packages
+      </h2>
 
       {loading ? (
         <p className="text-center">Loading...</p>
@@ -180,9 +189,7 @@ const Packages = () => {
                 </div>
               )}
 
-              <h3 className="text-lg font-bold mb-2 text-gray-800">
-                {pkg.Name}
-              </h3>
+              <h3 className="text-lg font-bold mb-2 text-gray-800">{pkg.Name}</h3>
               <p className="text-gray-600 text-sm">{pkg.Description}</p>
               <p className="mt-2 text-sm text-gray-500">{pkg.Specifications}</p>
               <p className="mt-3 font-semibold text-blue-600">
@@ -192,11 +199,10 @@ const Packages = () => {
               <div className="mt-auto pt-4">
                 <button
                   onClick={() => makeMostPopular(pkg.Id)}
-                  className={`w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg transition ${
-                    pkg.IsMostPopular
+                  className={`w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg transition ${pkg.IsMostPopular
                       ? "bg-yellow-500 text-white hover:bg-yellow-600"
                       : "bg-yellow-400 text-black hover:bg-yellow-300"
-                  }`}
+                    }`}
                 >
                   <Star
                     size={16}
@@ -210,6 +216,7 @@ const Packages = () => {
         </div>
       )}
     </div>
+
   );
 };
 

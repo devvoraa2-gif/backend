@@ -26,7 +26,7 @@ const Sidebar = () => {
 
       {/* Desktop Sidebar */}
       <div className="hidden md:flex md:flex-col md:w-64 bg-blue-900 text-white p-4 space-y-4">
-        {/* Admin + UserMenu in same line */}
+        
         <div className="flex items-center justify-between bg-blue-800 rounded px-3 py-2">
           <h2 className="text-lg font-bold">Admin</h2>
         </div>

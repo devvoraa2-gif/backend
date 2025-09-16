@@ -22,8 +22,6 @@ const Signin = () => {
     try {
       const { data } = await apiClient.post("/api/v1/auth/login", form);
 
-      console.log("Login Response:", data);
-
       if (data.Success) {
         // save tokens in localStorage
         localStorage.setItem("accessToken", data.Data.AccessToken);

@@ -26,8 +26,6 @@ const ConfirmEmail = () => {
       }
     } catch (err) {
       setStatus("error");
-      console.log(err);
-      
     }
   };
   

@@ -42,9 +42,9 @@ const Packages = () => {
 
   // Create Package
   const handleCreate = async (e) => {
+    setLoading(true); // global loader on
     e.preventDefault();
     setCreating(true);
-    setLoading(true); // global loader on
     try {
       await apiClient.post("/api/v1/package/create", form);
       setForm({

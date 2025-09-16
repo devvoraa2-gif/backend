@@ -71,7 +71,7 @@ const Dashboard = () => {
       const items = res.data?.Data?.Items || [];
       setTotalPages(res.data?.Data?.TotalPages || 1);
 
-      const formattedActive = items.map((item) => [
+      const formattedActive = items.map((item,index) => [
         item.SubscriptionId,
         item.CustomerEmail,
         item.InstallDate
@@ -102,14 +102,12 @@ const Dashboard = () => {
         item.InstallDate ?
           <div className="flex gap-4">
             <button
-              key={item.SubscriptionId}
               className="disable px-3 py-1 text-sm bg-green-700 text-white rounded"
             >
               Booked
             </button>
 
             <button
-              key={item.SubscriptionId}
               onClick={() => navigate(`/admin/book-date/${item.SubscriptionId}`)}
               className="cursor-pointer px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 transition"
             >
@@ -120,7 +118,6 @@ const Dashboard = () => {
 
           :
           <button
-            key={item.SubscriptionId}
             onClick={() => navigate(`/admin/book-date/${item.SubscriptionId}`)}
             className="cursor-pointer px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 transition"
           >

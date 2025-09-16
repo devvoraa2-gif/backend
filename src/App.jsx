@@ -34,7 +34,7 @@ function App() {
             </ProtectedRoute>
           }
         >
-          <Route index element={<Customers />} />
+          <Route index element={<Dashboard />} />
           <Route path="customers" element={<Customers />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="packages" element={<Packages />} />

@@ -2,7 +2,6 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import Admin from "./components/Admin/Admin";
 import Customers from "./components/Admin/Customers";
 import Dashboard from "./components/Admin/Dashboard";
-import Payments from "./components/Admin/Payments";
 import Packages from "./components/Admin/Packages";
 import Signup from "./components/Auth/Signup/Signup";
 import Signin from "./components/Auth/Signin/Signin";
@@ -36,7 +35,6 @@ function App() {
           <Route index element={<Customers />} />
           <Route path="customers" element={<Customers />} />
           <Route path="dashboard" element={<Dashboard />} />
-          <Route path="payments" element={<Payments />} />
           <Route path="packages" element={<Packages />} />
         </Route>
 

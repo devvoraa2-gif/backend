@@ -1,24 +1,24 @@
 import { Outlet } from "react-router-dom";
 import Sidebar from "./Sidebar";
-import UserMenu from "./UserMenu";
 
 const Admin = () => {
   return (
-    <div className="flex flex-col md:flex-row min-h-screen">
-      <Sidebar />
+    <div className="min-h-screen flex flex-col md:flex-row">
 
-      <main className="flex-1 bg-white p-4 md:p-6 overflow-x-auto">
-        {/* Top bar */}
-        <div className="flex justify-between items-center mb-6">
-          {/* <h1 className="text-xl md:text-2xl font-bold">Admin Panel</h1> */}
-          {/* <UserMenu /> */}
-        </div>
+      <aside className="hidden md:block fixed top-0 left-0 h-screen w-64 bg-blue-900">
+        <Sidebar />
+      </aside>
 
+      <div className="md:hidden">
+        <Sidebar mobile />
+      </div>
+
+      <main className="flex-1 bg-white p-4 md:p-6 overflow-x-auto md:ml-64">
         <Outlet />
       </main>
+      
     </div>
   );
 };
 
 export default Admin;
-

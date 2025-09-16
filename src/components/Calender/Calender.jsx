@@ -2,16 +2,19 @@ import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import apiClient from "../../services/apiClient.js";
+import { useNavigate, useParams } from "react-router-dom";
 
 const FutureDatePicker = () => {
+    const { paymentId } = useParams();
   const [selectedDate, setSelectedDate] = useState(null);
   const [isUpdated, setIsUpdated] = useState(false);
   const [loadingUpdate, setLoadingUpdate] = useState(false);
   const [loadingSend, setLoadingSend] = useState(false);
   const [message, setMessage] = useState(null); // { type: "success" | "error", text: string }
+  const navigate = useNavigate();
 
-  const subscriptionId = 11;
-
+  const subscriptionId = paymentId;
+ 
   const handleChange = (date) => {
     if (date) {
       const isoDate = date.toISOString();
@@ -54,6 +57,7 @@ const FutureDatePicker = () => {
       console.error("Error sending install date:", err);
       setMessage({ type: "error", text: "Failed to send install date." });
     } finally {
+      navigate(`/admin/dashboard`)
       setLoadingSend(false);
     }
   };
@@ -64,6 +68,9 @@ const FutureDatePicker = () => {
       <h2 className="text-2xl font-bold text-gray-800 text-center">
         Book Installation Date
       </h2>
+      <h3 className="text-xl font-bold text-gray-800 text-center">
+        client with subscription-id {subscriptionId}
+      </h3>
 
       {/* Date Picker */}
       <div className="flex items-center justify-center">

@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { PlusCircle, Loader2, Star, Package, ClipboardList } from "lucide-react";
 import apiClient from "../../services/apiClient";
-import { useLoader } from "../../context/LoaderContext.jsx";
+import Loader from "../Loader.jsx";
 
 const Packages = () => {
-  const { loading, setLoading } = useLoader(); // use global loader
+  const [ loading, setLoading ] = useState(false); 
   const [packages, setPackages] = useState([]);
   const [creating, setCreating] = useState(false);
   const [form, setForm] = useState({
@@ -175,7 +175,7 @@ const Packages = () => {
       </h2>
 
       {loading ? (
-        <p className="text-center">Loading...</p>
+        <Loader inline/>
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {packages.map((pkg) => (

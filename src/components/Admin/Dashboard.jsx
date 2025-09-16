@@ -3,10 +3,17 @@ import DashboardCard from "./DashboardCard";
 import Table from "./Table";
 import apiClient from "../../services/apiClient.js";
 import { DollarSign, Activity, Package, ChevronLeft, ChevronRight } from "lucide-react";
-import { useLoader } from "../../context/LoaderContext.jsx";
+import { useNavigate } from "react-router-dom";
+import Loader from "../Loader.jsx";
 
 const Dashboard = () => {
-  const { setLoading } = useLoader();
+
+  // loader states 
+  const [loadingActive, setLoadingActive] = useState(false);
+  const [loadingPayments, setLoadingPayments] = useState(false);
+
+
+  const navigate = useNavigate();
 
   const [activeRows, setActiveRows] = useState([]);
   const [paymentRows, setPaymentRows] = useState([]);
@@ -29,12 +36,33 @@ const Dashboard = () => {
 
 
 
-  const activeHeaders = ["ID", "Email", "Installation Date", "Status"];
+  const activeHeaders = ["ID", "Email", "Installation Date", "Status", "Book data"];
   const paymentsHeaders = ["ID", "Customer Email", "Amount", "Date"];
+
+
+  //  Fetch Installations Status
+  const updateInstallStatus = async (subscriptionId, status) => {
+    try {
+      const res = await apiClient.post(
+        `/api/v1/subscription/update-install-state?subscriptionId=${subscriptionId}&status=${status}`
+      );
+
+      if (res.data?.Success) {
+        // refresh table after update
+        fetchActiveInstallations(pageNumber);
+      } else {
+        console.error("Failed to update status:", res.data?.Message);
+      }
+    } catch (err) {
+      console.error("Error updating install status:", err);
+    }
+  };
+
+
 
   // Fetch Active Installations
   const fetchActiveInstallations = async (page) => {
-    setLoading(true);
+    setLoadingActive(true);
     try {
       const res = await apiClient.get(
         `/api/v1/subscription/active-installations?pageNumber=${page}&pageSize=${pageSize}`
@@ -46,29 +74,71 @@ const Dashboard = () => {
       const formattedActive = items.map((item) => [
         item.SubscriptionId,
         item.CustomerEmail,
-        new Date(item.InstallDate).toLocaleDateString(),
+        item.InstallDate
+          ? new Date(item.InstallDate).toLocaleString("en-GB", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+          })
+          : "Not Specified",
+
         item.InstallStatus === 1 ? (
-          <span className="bg-green-200 text-green-800 px-2 py-1 rounded text-sm">
+          <button
+            onClick={() => updateInstallStatus(item.SubscriptionId, 0)}
+            className="bg-green-200 text-green-800 px-2 py-1 rounded text-sm cursor-pointer">
             Active
-          </span>
+          </button>
         ) : (
-          <span className="bg-red-200 text-red-800 px-2 py-1 rounded text-sm">
+          <button
+            onClick={() => updateInstallStatus(item.SubscriptionId, 1)}
+            className="bg-red-200 text-red-800 px-2 py-1 rounded text-sm cursor-pointer">
             Inactive
-          </span>
+          </button>
         ),
+
+
+        item.InstallDate ?
+          <div className="flex gap-4">
+            <button
+              key={item.SubscriptionId}
+              className="disable px-3 py-1 text-sm bg-green-700 text-white rounded"
+            >
+              Booked
+            </button>
+
+            <button
+              key={item.SubscriptionId}
+              onClick={() => navigate(`/admin/book-date/${item.SubscriptionId}`)}
+              className="cursor-pointer px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+            >
+              Update
+            </button>
+
+          </div>
+
+          :
+          <button
+            key={item.SubscriptionId}
+            onClick={() => navigate(`/admin/book-date/${item.SubscriptionId}`)}
+            className="cursor-pointer px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+          >
+            Book installation data
+          </button>
       ]);
 
       setActiveRows(formattedActive);
     } catch (err) {
       console.error("Failed to fetch active installations", err);
     } finally {
-      setLoading(false);
+      setLoadingActive(false);
     }
   };
 
 
   const fetchPayments = async (page) => {
-    setLoading(true);
+    setLoadingPayments(true);
     try {
       const res = await apiClient.get(
         `/api/v1/payment/recent-payments?pageNumber=${page}&pageSize=${paymentPageSize}`
@@ -86,7 +156,7 @@ const Dashboard = () => {
     } catch (err) {
       console.error("Failed to fetch payments", err);
     } finally {
-      setLoading(false);
+      setLoadingPayments(false);
     }
   };
 
@@ -111,7 +181,7 @@ const Dashboard = () => {
     };
 
     fetchOtherStats();
-  }, []); 
+  }, []);
 
   // Fetch paginated active installations
   useEffect(() => {
@@ -122,6 +192,7 @@ const Dashboard = () => {
   useEffect(() => {
     fetchPayments(paymentPageNumber);
   }, [paymentPageNumber]);
+
 
 
 
@@ -167,37 +238,46 @@ const Dashboard = () => {
       <div>
         {activeTab === "installations" && (
           <div>
-            <Table headers={activeHeaders} rows={activeRows} />
+            {loadingActive ?
+              <Loader inline /> :
+              <>
+                <Table headers={activeHeaders} rows={activeRows} />
 
-            {/* Installations Pagination */}
-            <div className="flex items-center justify-center gap-12 mt-4">
-              <button
-                onClick={() => setPageNumber((prev) => Math.max(prev - 1, 1))}
-                disabled={pageNumber === 1}
-                className="flex items-center gap-2 px-3 py-2 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50"
-              >
-                <ChevronLeft size={16} /> Prev
-              </button>
+                {/* Installations Pagination */}
+                <div className="flex items-center justify-center gap-12 mt-4">
+                  <button
+                    onClick={() => setPageNumber((prev) => Math.max(prev - 1, 1))}
+                    disabled={pageNumber === 1}
+                    className="flex items-center gap-2 px-3 py-2 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50"
+                  >
+                    <ChevronLeft size={16} /> Prev
+                  </button>
 
-              <span className="text-sm text-gray-600">
-                Page {pageNumber} of {totalPages}
-              </span>
+                  <span className="text-sm text-gray-600">
+                    Page {pageNumber} of {totalPages}
+                  </span>
 
-              <button
-                onClick={() => setPageNumber((prev) => Math.min(prev + 1, totalPages))}
-                disabled={pageNumber === totalPages}
-                className="flex items-center gap-2 px-3 py-2 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50"
-              >
-                Next <ChevronRight size={16} />
-              </button>
-            </div>
+                  <button
+                    onClick={() => setPageNumber((prev) => Math.min(prev + 1, totalPages))}
+                    disabled={pageNumber === totalPages}
+                    className="flex items-center gap-2 px-3 py-2 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50"
+                  >
+                    Next <ChevronRight size={16} />
+                  </button>
+                </div>
+              </>
+
+            }
+
           </div>
         )}
 
         {activeTab === "payments" && (
           <div>
+            {loadingPayments ? 
+            <Loader inline /> :
+            <>
             <Table headers={paymentsHeaders} rows={paymentRows} />
-
             {/* Payments Pagination */}
             <div className="flex items-center justify-center gap-12 mt-4">
               <button
@@ -226,6 +306,9 @@ const Dashboard = () => {
                 Next <ChevronRight size={16} />
               </button>
             </div>
+            </>
+            }
+
           </div>
         )}
       </div>

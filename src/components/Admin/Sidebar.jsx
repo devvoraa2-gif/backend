@@ -9,8 +9,8 @@ const Sidebar = () => {
   const [open, setOpen] = useState(false);
 
   const links = [
+    { to: "/admin/dashboard", label: "Dashboard" },
     { to: "/admin/customers", label: "Customers" },
-    { to: "/admin/dashboard", label: "Active Installations" },
     { to: "/admin/packages", label: "Packages" },
   ];
 

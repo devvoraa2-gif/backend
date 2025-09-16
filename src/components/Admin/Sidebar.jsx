@@ -1,8 +1,9 @@
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Wifi } from "lucide-react";
 import UserMenu from "./UserMenu";
+import Sologan from "../../ui/Sologan";
 
 const Sidebar = () => {
   const [open, setOpen] = useState(false);
@@ -17,7 +18,7 @@ const Sidebar = () => {
     <>
       {/* Mobile Top Bar */}
       <div className="md:hidden bg-blue-900 text-white flex items-center justify-between p-3">
-        <h2 className="font-bold">Admin</h2>
+        <Sologan />
         <button onClick={() => setOpen(true)}>
           <Menu size={24} />
         </button>
@@ -25,10 +26,8 @@ const Sidebar = () => {
 
       {/* Desktop Sidebar */}
       <div className="hidden md:flex md:flex-col md:w-64 bg-blue-900 text-white p-4 space-y-4">
-        {/* Admin + UserMenu in same line */}
-        <div className="flex items-center justify-between bg-blue-800 rounded px-3 py-2">
-          <h2 className="text-lg font-bold">Admin</h2>
-        </div>
+        <Sologan />
+        <hr className="text-gray-400" />
 
         {/* Links */}
         <div className="mt-4 space-y-2">
@@ -37,8 +36,7 @@ const Sidebar = () => {
               key={link.to}
               to={link.to}
               className={({ isActive }) =>
-                `p-3 rounded hover:bg-blue-700 block ${
-                  isActive ? "bg-blue-700 font-semibold" : ""
+                `p-3 rounded hover:bg-blue-700 block ${isActive ? "bg-blue-700 font-semibold" : ""
                 }`
               }
             >
@@ -72,7 +70,7 @@ const Sidebar = () => {
             >
               {/* Sidebar Header */}
               <div className="flex justify-between items-center p-4 border-b border-blue-700">
-                <h2 className="font-bold">Admin</h2>
+                <Sologan />
                 <UserMenu sidebar />
                 <button onClick={() => setOpen(false)}>
                   <X size={24} />
@@ -87,8 +85,7 @@ const Sidebar = () => {
                     to={link.to}
                     onClick={() => setOpen(false)}
                     className={({ isActive }) =>
-                      `p-3 rounded hover:bg-blue-700 block ${
-                        isActive ? "bg-blue-700 font-semibold" : ""
+                      `p-3 rounded hover:bg-blue-700 block ${isActive ? "bg-blue-700 font-semibold" : ""
                       }`
                     }
                   >

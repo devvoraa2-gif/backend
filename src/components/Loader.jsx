@@ -1,27 +1,44 @@
 import { motion } from "framer-motion";
+import { Wifi } from "lucide-react";
 
-const Loader = () => {
+const Loader = ({ inline = false }) => {
   return (
-    <div className="flex flex-col items-center justify-center p-4">
-      {/* Spinning ring */}
+    <div
+      className={
+        inline
+          ? "flex flex-col items-center justify-center py-8 mt-10"
+          : "fixed inset-0 flex flex-col items-center justify-center bg-blue-800 z-50"
+      }
+    >
+      {/* Animated Wifi Icon */}
       <motion.div
-        className="w-10 h-10 rounded-full border-4 border-t-4 border-transparent border-t-[#D9F266]"
-        animate={{ rotate: 360 }}
-        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-      />
-
-      {/* Subtitle */}
-      <motion.p
-        className="mt-2 text-gray-600 text-sm font-medium"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: [0, 1, 0] }}
+        initial={{ rotate: -45 }}
+        animate={{
+          color: ["#ffffff", "#D9F266", "#ffffff"], // white -> green -> white
+        }}
         transition={{
           duration: 2,
           repeat: Infinity,
           ease: "easeInOut",
         }}
       >
-        Loading...
+        <Wifi size={inline ? 40 : 80} />
+      </motion.div>
+
+      {/* Business tagline */}
+      <motion.p
+        className={`mt-4 font-semibold ${
+          inline ? "text-gray-700 text-base" : "text-white text-lg"
+        }`}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: [0, 1, 0] }}
+        transition={{
+          duration: 3,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      >
+        Connecting your world...
       </motion.p>
     </div>
   );

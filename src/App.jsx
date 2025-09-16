@@ -21,10 +21,9 @@ function App() {
         <Route path="/register" element={<Signup />} />
         <Route path="/login" element={<Signin />} />
         <Route path="/confirm-email" element={<ConfirmEmail />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} /> {/* 🔹 new */}
-        <Route path="/reset-password" element={<ResetPassword />} />   {/* 🔹 new */}
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />   
 
-        <Route path="/book-date" element={<Calender />} />
 
         {/* Admin protected */}
         <Route
@@ -39,6 +38,7 @@ function App() {
           <Route path="customers" element={<Customers />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="packages" element={<Packages />} />
+          <Route path="book-date/:paymentId" element={<Calender />} />
         </Route>
 
       </Routes>

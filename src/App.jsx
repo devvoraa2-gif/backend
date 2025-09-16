@@ -10,6 +10,7 @@ import ProtectedRoute from "./components/Auth/ProtectedRoute";
 import ForgotPassword from "./components/Auth/ForgotPassword";
 import ResetPassword from "./components/Auth/ResetPassword";
 import { LoaderProvider } from "./context/LoaderContext";
+import Calender from './components/Calender/Calender.jsx'
 
 
 function App() {
@@ -22,6 +23,8 @@ function App() {
         <Route path="/confirm-email" element={<ConfirmEmail />} />
         <Route path="/forgot-password" element={<ForgotPassword />} /> {/* 🔹 new */}
         <Route path="/reset-password" element={<ResetPassword />} />   {/* 🔹 new */}
+
+        <Route path="/book-date" element={<Calender />} />
 
         {/* Admin protected */}
         <Route

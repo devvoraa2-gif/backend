@@ -1,12 +1,22 @@
 import { useEffect, useState } from "react";
-import { PlusCircle, Loader2, Star, Package, ClipboardList } from "lucide-react";
+import {
+  PlusCircle,
+  Loader2,
+  Star,
+  Package,
+  ClipboardList,
+  CheckCircle,
+  Trash,
+} from "lucide-react";
 import apiClient from "../../services/apiClient";
 import Loader from "../Loader.jsx";
+import ConfirmDeleteModal from "../../ui/ConfirmDeleteModal.jsx";
 
 const Packages = () => {
-  const [ loading, setLoading ] = useState(false); 
+  const [loading, setLoading] = useState(false);
   const [packages, setPackages] = useState([]);
   const [creating, setCreating] = useState(false);
+  const [createdSuccess, setCreatedSuccess] = useState(false);
   const [form, setForm] = useState({
     Name: "",
     Description: "",
@@ -15,6 +25,10 @@ const Packages = () => {
     Currency: "usd",
     Interval: "month",
   });
+
+  // Delete modal state
+  const [deleteId, setDeleteId] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   // Fetch Packages
   const fetchPackages = async () => {
@@ -42,9 +56,9 @@ const Packages = () => {
 
   // Create Package
   const handleCreate = async (e) => {
-    setLoading(true); // global loader on
     e.preventDefault();
     setCreating(true);
+    setLoading(true);
     try {
       await apiClient.post("/api/v1/package/create", form);
       setForm({
@@ -55,12 +69,16 @@ const Packages = () => {
         Currency: "usd",
         Interval: "month",
       });
-      fetchPackages(); // refresh list
+      fetchPackages();
+
+      // Success state for button
+      setCreatedSuccess(true);
+      setTimeout(() => setCreatedSuccess(false), 2000);
     } catch (err) {
       console.error("Error creating package:", err);
     } finally {
       setCreating(false);
-      setLoading(false); // global loader off
+      setLoading(false);
     }
   };
 
@@ -73,6 +91,24 @@ const Packages = () => {
     } catch (err) {
       console.error("Error marking most popular:", err);
     } finally {
+      setLoading(false);
+    }
+  };
+
+  // Delete Package
+  const handleDelete = async () => {
+    if (!deleteId) return;
+    setLoading(true);
+    try {
+      await apiClient.post("/api/v1/package/delete", deleteId, {
+        headers: { "Content-Type": "application/json" },
+      });
+      fetchPackages();
+    } catch (err) {
+      console.error("Error deleting package:", err);
+    } finally {
+      setShowDeleteModal(false);
+      setDeleteId(null);
       setLoading(false);
     }
   };
@@ -155,11 +191,19 @@ const Packages = () => {
         <button
           type="submit"
           disabled={creating}
-          className="flex items-center justify-center w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition disabled:opacity-70"
+          className={`flex items-center justify-center w-full p-3 rounded-lg transition ${
+            createdSuccess
+              ? "bg-green-500 text-white"
+              : "bg-blue-600 text-white hover:bg-blue-700"
+          } disabled:opacity-70`}
         >
           {creating ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Creating...
+            </>
+          ) : createdSuccess ? (
+            <>
+              <CheckCircle className="mr-2" /> Created!
             </>
           ) : (
             <>
@@ -175,7 +219,7 @@ const Packages = () => {
       </h2>
 
       {loading ? (
-        <Loader inline/>
+        <Loader inline />
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {packages.map((pkg) => (
@@ -197,12 +241,14 @@ const Packages = () => {
               </p>
 
               <div className="mt-auto pt-4">
+                {/* Most Popular button */}
                 <button
                   onClick={() => makeMostPopular(pkg.Id)}
-                  className={`w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg transition ${pkg.IsMostPopular
+                  className={`w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg transition ${
+                    pkg.IsMostPopular
                       ? "bg-yellow-500 text-white hover:bg-yellow-600"
                       : "bg-yellow-400 text-black hover:bg-yellow-300"
-                    }`}
+                  }`}
                 >
                   <Star
                     size={16}
@@ -210,13 +256,30 @@ const Packages = () => {
                   />
                   {pkg.IsMostPopular ? "Most Popular" : "Mark as Most Popular"}
                 </button>
+
+                {/* Delete button */}
+                <button
+                  onClick={() => {
+                    setDeleteId(pkg.Id);
+                    setShowDeleteModal(true);
+                  }}
+                  className="w-full flex items-center justify-center gap-2 px-4 py-2 mt-2 rounded-lg border border-red-500 bg-white text-red-500 hover:bg-yellow-400 hover:text-black hover:border-yellow-400 transition"
+                >
+                  <Trash size={16} /> Delete
+                </button>
               </div>
             </div>
           ))}
         </div>
       )}
-    </div>
 
+      {/* Confirm Delete Modal */}
+      <ConfirmDeleteModal
+        isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        onConfirm={handleDelete}
+      />
+    </div>
   );
 };
 

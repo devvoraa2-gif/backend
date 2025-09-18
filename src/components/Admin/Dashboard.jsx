@@ -37,7 +37,7 @@ const Dashboard = () => {
 
 
   const activeHeaders = ["ID", "Email", "Installation Date", "Status", "Book data"];
-  const paymentsHeaders = ["ID", "Customer Email", "Amount", "Date"];
+  const paymentsHeaders = ["ID", "Invoice Link", "Amount", "Date"];
 
 
   //  Fetch Installations Status
@@ -65,13 +65,12 @@ const Dashboard = () => {
     setLoadingActive(true);
     try {
       const res = await apiClient.get(
-        `/api/v1/subscription/active-installations?pageNumber=${page}&pageSize=${pageSize}`
+        `/api/v1/subscription/installations?pageNumber=${page}&pageSize=${pageSize}`
       );
-
       const items = res.data?.Data?.Items || [];
       setTotalPages(res.data?.Data?.TotalPages || 1);
 
-      const formattedActive = items.map((item,index) => [
+      const formattedActive = items.map((item, index) => [
         item.SubscriptionId,
         item.CustomerEmail,
         item.InstallDate
@@ -145,7 +144,21 @@ const Dashboard = () => {
 
       const formattedPayments = items.map((p) => [
         p.PaymentId,
-        p.CustomerEmail,
+        p.InvoiceUrl ? (
+          <a
+            href={p.InvoiceUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <button className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 cursor-pointer">
+              View Invoice Link
+            </button>
+          </a>
+        ) : (
+          <button className="px-3 py-1 bg-red-800 text-white rounded">
+            Link Not Provided
+          </button>
+        ),
         `$${p.PaymentAmount.toFixed(2)}`,
         new Date(p.CreatedAt).toLocaleString(),
       ]);
@@ -271,39 +284,39 @@ const Dashboard = () => {
 
         {activeTab === "payments" && (
           <div>
-            {loadingPayments ? 
-            <Loader inline /> :
-            <>
-            <Table headers={paymentsHeaders} rows={paymentRows} />
-            {/* Payments Pagination */}
-            <div className="flex items-center justify-center gap-12 mt-4">
-              <button
-                onClick={() =>
-                  setPaymentPageNumber((prev) => Math.max(prev - 1, 1))
-                }
-                disabled={paymentPageNumber === 1}
-                className="flex items-center gap-2 px-3 py-2 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50"
-              >
-                <ChevronLeft size={16} /> Prev
-              </button>
+            {loadingPayments ?
+              <Loader inline /> :
+              <>
+                <Table headers={paymentsHeaders} rows={paymentRows} />
+                {/* Payments Pagination */}
+                <div className="flex items-center justify-center gap-12 mt-4">
+                  <button
+                    onClick={() =>
+                      setPaymentPageNumber((prev) => Math.max(prev - 1, 1))
+                    }
+                    disabled={paymentPageNumber === 1}
+                    className="flex items-center gap-2 px-3 py-2 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50"
+                  >
+                    <ChevronLeft size={16} /> Prev
+                  </button>
 
-              <span className="text-sm text-gray-600">
-                Page {paymentPageNumber} of {paymentTotalPages}
-              </span>
+                  <span className="text-sm text-gray-600">
+                    Page {paymentPageNumber} of {paymentTotalPages}
+                  </span>
 
-              <button
-                onClick={() =>
-                  setPaymentPageNumber((prev) =>
-                    Math.min(prev + 1, paymentTotalPages)
-                  )
-                }
-                disabled={paymentPageNumber === paymentTotalPages}
-                className="flex items-center gap-2 px-3 py-2 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50"
-              >
-                Next <ChevronRight size={16} />
-              </button>
-            </div>
-            </>
+                  <button
+                    onClick={() =>
+                      setPaymentPageNumber((prev) =>
+                        Math.min(prev + 1, paymentTotalPages)
+                      )
+                    }
+                    disabled={paymentPageNumber === paymentTotalPages}
+                    className="flex items-center gap-2 px-3 py-2 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50"
+                  >
+                    Next <ChevronRight size={16} />
+                  </button>
+                </div>
+              </>
             }
 
           </div>

@@ -85,15 +85,18 @@ const Dashboard = () => {
 
         item.InstallStatus === 1 ? (
           <button
-            onClick={() => updateInstallStatus(item.SubscriptionId, 0)}
+            onClick={() => {
+              updateInstallStatus(item.SubscriptionId, 0);
+
+            }}
             className="bg-green-200 text-green-800 px-2 py-1 rounded text-sm cursor-pointer">
-            Active
+            Completed
           </button>
         ) : (
           <button
             onClick={() => updateInstallStatus(item.SubscriptionId, 1)}
             className="bg-red-200 text-red-800 px-2 py-1 rounded text-sm cursor-pointer">
-            Inactive
+            Non Completed
           </button>
         ),
 
@@ -175,14 +178,14 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchOtherStats = async () => {
       try {
-        const [activeCountRes, subscriptionCountRes, paymentsCountRes] =
+        const [subscriptionCountRes, paymentsCountRes] =
           await Promise.all([
-            apiClient.get("/api/v1/subscription/active-installations-count"),
+            // apiClient.get("/api/v1/subscription/active-installations-count"),
             apiClient.get("/api/v1/subscription/count"),
             apiClient.get("/api/v1/payment/total-payments"),
           ]);
 
-        setActiveCount(activeCountRes.data);
+        // setActiveCount(activeCountRes.data);
         setSubscriptionCount(subscriptionCountRes.data);
         setPaymentCount(paymentsCountRes.data);
       } catch (err) {
@@ -193,6 +196,20 @@ const Dashboard = () => {
     fetchOtherStats();
   }, []);
 
+
+  useEffect(()=>{
+    const fetchNonCompletedCount = async () => {
+      try{
+        const res = await apiClient.get("/api/v1/subscription/active-installations-count");
+        setActiveCount(res.data);
+      }catch{
+        console.error("Failed to fetch non completed installations count")
+      }
+    } 
+    fetchNonCompletedCount();
+  },[updateInstallStatus])
+
+  
   // Fetch paginated active installations
   useEffect(() => {
     fetchActiveInstallations(pageNumber);
@@ -210,7 +227,7 @@ const Dashboard = () => {
     <div>
       {/* Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-        <DashboardCard title="Active Installations" value={activeCount} icon={Activity} color="blue" />
+        <DashboardCard title="Non completed Installations" value={activeCount} icon={Activity} color="blue" />
         <DashboardCard title="Subscriptions" value={subscriptionCount} icon={Package} color="yellow" />
         <DashboardCard
           title="Payments"

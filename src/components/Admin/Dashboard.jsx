@@ -153,12 +153,12 @@ const Dashboard = () => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <button className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 cursor-pointer">
+            <button className="bg-green-200 text-green-800 px-2 py-1 rounded text-sm cursor-pointer">
               View Invoice Link
             </button>
           </a>
         ) : (
-          <button className="px-3 py-1 bg-red-800 text-white rounded">
+          <button className="bg-red-200 text-red-800 px-2 py-1 rounded text-sm">
             Link Not Provided
           </button>
         ),

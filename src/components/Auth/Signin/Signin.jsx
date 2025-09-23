@@ -44,16 +44,16 @@ const Signin = () => {
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
-      className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-900 via-blue-700 to-blue-500"
+      className="flex items-center justify-center min-h-screen bg-gradient-to-br from-yellow-900 via-yellow-700 to-yellow-500"
     >
-      <div className="w-full max-w-md bg-white/20 backdrop-blur-lg p-8 rounded-2xl shadow-xl border border-white/30">
+      <div className="w-full max-w-md bg-white/10 backdrop-blur-lg p-8 rounded-2xl shadow-xl border border-white/30">
 
         <div className="flex flex-col items-center text-center mb-6">
           {/* Icon + Company Name */}
           <div className="flex items-center gap-2">
             <Wifi
               size={32}
-              className="text-white transform -rotate-45 transition-colors duration-300 hover:text-[#D9F266]"
+              className="text-white transform -rotate-45 transition-colors duration-300 hover:text-yellow-500"
             />
             <span className="text-2xl font-bold text-white">Elite UK</span>
           </div>
@@ -72,7 +72,7 @@ const Signin = () => {
             value={form.Email}
             onChange={handleChange}
             required
-            className="w-full p-3 border border-white rounded-lg bg-white/10 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full p-3 border border-white rounded-lg bg-white/10 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-yellow-400"
           />
 
           <input
@@ -82,23 +82,23 @@ const Signin = () => {
             value={form.Password}
             onChange={handleChange}
             required
-            className="w-full p-3 border border-white rounded-lg bg-white/10 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full p-3 border border-white rounded-lg bg-white/10 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-yellow-400"
           />
 
           {/* Forgot password link */}
-          <div className="text-right">
+          {/* <div className="text-right">
             <Link
               to="/forgot-password"
               className="text-sm text-white opacity-90 hover:underline"
             >
               Forgot password?
             </Link>
-          </div>
+          </div> */}
 
           <button
             type="submit"
             disabled={loading}
-            className="flex items-center justify-center w-full bg-blue-900 text-white p-3 rounded-lg hover:bg-blue-700 transition-all duration-200 disabled:opacity-70"
+            className="flex items-center justify-center w-full bg-yellow-900 text-white p-3 rounded-lg hover:bg-yellow-700 transition-all duration-200 disabled:opacity-70"
           >
             {loading ? (
               <>
@@ -114,7 +114,7 @@ const Signin = () => {
 
         {error && <p className="text-red-600 text-sm mt-3">{error}</p>}
 
-        <p className="text-sm text-gray-800 mt-4 text-center">
+        {/* <p className="text-sm text-gray-800 mt-4 text-center">
           Don’t have an account?{" "}
           <Link
             to="/register"
@@ -122,7 +122,7 @@ const Signin = () => {
           >
             Sign up
           </Link>
-        </p>
+        </p> */}
       </div>
     </motion.div>
   );

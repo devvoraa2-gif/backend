@@ -33,7 +33,7 @@ const UserMenu = () => {
       {/* Trigger */}
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center space-x-2 bg-blue-900 text-white px-4 py-2 rounded-full hover:bg-blue-700"
+        className="flex items-center space-x-2 bg-main text-white px-4 py-2 rounded-full hover:bg-secondary"
       >
         <User className="h-5 w-5" />
         <span>{user["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"] || "User"}</span>

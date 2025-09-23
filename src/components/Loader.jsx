@@ -7,7 +7,7 @@ const Loader = ({ inline = false }) => {
       className={
         inline
           ? "flex flex-col items-center justify-center py-8 mt-10"
-          : "fixed inset-0 flex flex-col items-center justify-center bg-blue-800 z-50"
+          : "fixed inset-0 flex flex-col items-center justify-center bg-main z-50"
       }
     >
       {/* Animated Wifi Icon */}

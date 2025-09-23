@@ -117,7 +117,7 @@ const Packages = () => {
     <div className="w-full">
       {/* Header */}
       <h1 className="text-2xl font-bold mb-6 text-gray-800 flex items-center gap-2">
-        <Package className="text-blue-600" size={26} /> Package Manager
+        <Package className="text-[#ff6900]" size={26} /> Package Manager
       </h1>
 
       {/* Create Package Form */}
@@ -126,7 +126,7 @@ const Packages = () => {
         className="bg-white p-6 rounded-xl shadow-md space-y-4 mb-10 border border-gray-200"
       >
         <h2 className="text-lg font-semibold text-gray-700 flex items-center gap-2">
-          <PlusCircle className="text-green-600" size={20} /> Create New Package
+          <PlusCircle className="text-[#ff6900]" size={20} /> Create New Package
         </h2>
 
         <input
@@ -194,7 +194,7 @@ const Packages = () => {
           className={`flex items-center justify-center w-full p-3 rounded-lg transition ${
             createdSuccess
               ? "bg-green-500 text-white"
-              : "bg-blue-600 text-white hover:bg-blue-700"
+              : "bg-[#ff6900] text-white hover:bg-[#fcb900]"
           } disabled:opacity-70`}
         >
           {creating ? (
@@ -215,7 +215,7 @@ const Packages = () => {
 
       {/* Packages List */}
       <h2 className="text-xl font-semibold mb-4 text-gray-800 flex items-center gap-2">
-        <ClipboardList className="text-purple-600" size={22} /> Packages
+        <ClipboardList className="text-[#ff6900]" size={22} /> Packages
       </h2>
 
       {loading ? (
@@ -228,7 +228,7 @@ const Packages = () => {
               className="overflow-hidden bg-white p-6 rounded-xl shadow-md relative flex flex-col border border-gray-200"
             >
               {pkg.IsMostPopular && (
-                <div className="absolute top-6 -right-7 rotate-45 bg-yellow-400 text-black text-xs font-bold px-6 py-1 shadow overflow-hidden">
+                <div className="absolute top-6 -right-7 rotate-45 bg-[#ff6900] text-white text-xs font-bold px-6 py-1 shadow overflow-hidden">
                   Most Popular
                 </div>
               )}
@@ -236,7 +236,7 @@ const Packages = () => {
               <h3 className="text-lg font-bold mb-2 text-gray-800">{pkg.Name}</h3>
               <p className="text-gray-600 text-sm">{pkg.Description}</p>
               <p className="mt-2 text-sm text-gray-500">{pkg.Specifications}</p>
-              <p className="mt-3 font-semibold text-blue-600">
+              <p className="mt-3 font-semibold text-[#ff6900]">
                 ${(pkg.Price / 100).toFixed(2)}
               </p>
 
@@ -244,11 +244,7 @@ const Packages = () => {
                 {/* Most Popular button */}
                 <button
                   onClick={() => makeMostPopular(pkg.Id)}
-                  className={`w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg transition ${
-                    pkg.IsMostPopular
-                      ? "bg-yellow-500 text-white hover:bg-yellow-600"
-                      : "bg-yellow-400 text-black hover:bg-yellow-300"
-                  }`}
+                  className={`w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg transition bg-[#ff6900] text-white hover:bg-[#fcb900]`}
                 >
                   <Star
                     size={16}
@@ -263,7 +259,7 @@ const Packages = () => {
                     setDeleteId(pkg.Id);
                     setShowDeleteModal(true);
                   }}
-                  className="w-full flex items-center justify-center gap-2 px-4 py-2 mt-2 rounded-lg border border-red-500 bg-white text-red-500 hover:bg-yellow-400 hover:text-black hover:border-yellow-400 transition"
+                  className="w-full flex items-center justify-center gap-2 px-4 py-2 mt-2 rounded-lg border text-white bg-[#fcb900] hover:bg-[#ff6900] transition"
                 >
                   <Trash size={16} /> Delete
                 </button>

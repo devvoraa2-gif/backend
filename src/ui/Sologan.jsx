@@ -7,7 +7,7 @@ const Sologan = () => {
             <div className="flex items-center gap-2">
                 <Wifi
                     size={24}
-                    className="transform -rotate-45 text-[#D9F266]"
+                    className="transform -rotate-45 text-[#ff6900]"
                 />
                 <h2 className="text-lg font-bold">Elite UK</h2>
             </div>

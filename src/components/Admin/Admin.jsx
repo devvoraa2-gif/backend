@@ -5,7 +5,7 @@ const Admin = () => {
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
 
-      <aside className="hidden md:block fixed top-0 left-0 h-screen w-64 bg-blue-900">
+      <aside className="hidden md:block fixed top-0 left-0 h-screen w-64 bg-main">
         <Sidebar />
       </aside>
 

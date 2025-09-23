@@ -17,7 +17,7 @@ const Sidebar = () => {
   return (
     <>
       {/* Mobile Top Bar */}
-      <div className="md:hidden bg-blue-900 text-white flex items-center justify-between p-3">
+      <div className="md:hidden bg-main text-white flex items-center justify-between p-3">
         <Sologan />
         <button onClick={() => setOpen(true)}>
           <Menu size={24} />
@@ -25,7 +25,7 @@ const Sidebar = () => {
       </div>
 
       {/* Desktop Sidebar */}
-      <div className="hidden md:flex md:flex-col md:w-64 bg-blue-900 text-white p-4 space-y-4">
+      <div className="hidden md:flex md:flex-col md:w-64 bg-main text-white p-4 space-y-4">
         <Sologan />
         <hr className="text-gray-400" />
 
@@ -36,7 +36,7 @@ const Sidebar = () => {
               key={link.to}
               to={link.to}
               className={({ isActive }) =>
-                `p-3 rounded hover:bg-blue-700 block ${isActive ? "bg-blue-700 font-semibold" : ""
+                `p-3 rounded hover:bg-[#ff6900] block ${isActive ? "bg-[#ff6900] font-semibold" : ""
                 }`
               }
             >
@@ -66,10 +66,10 @@ const Sidebar = () => {
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
               transition={{ duration: 0.3 }}
-              className="fixed top-0 left-0 w-64 h-full bg-blue-900 text-white z-50 flex flex-col"
+              className="fixed top-0 left-0 w-64 h-full bg-main text-white z-50 flex flex-col"
             >
               {/* Sidebar Header */}
-              <div className="flex justify-between items-center p-4 border-b border-blue-700">
+              <div className="flex justify-between items-center p-4 border-b border-[#fcb900]">
                 <Sologan />
                 <UserMenu sidebar />
                 <button onClick={() => setOpen(false)}>
@@ -85,7 +85,7 @@ const Sidebar = () => {
                     to={link.to}
                     onClick={() => setOpen(false)}
                     className={({ isActive }) =>
-                      `p-3 rounded hover:bg-blue-700 block ${isActive ? "bg-blue-700 font-semibold" : ""
+                      `p-3 rounded hover:bg-[#ff6900] block ${isActive ? "bg-[#ff6900] font-semibold" : ""
                       }`
                     }
                   >

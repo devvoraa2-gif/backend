@@ -42,7 +42,7 @@ const Customers = () => {
       {/* Header Section */}
       <div className="mb-6">
         <h2 className="text-2xl font-bold flex items-center gap-2 text-gray-800">
-          <Users className="text-blue-600" size={24} /> Customers
+          <Users className="text-[#ff6900]" size={24} /> Customers
         </h2>
         <p className="text-gray-500 text-sm">
           Manage all your customers in one place

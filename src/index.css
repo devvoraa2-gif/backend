@@ -1,1 +1,17 @@
 @import "tailwindcss";
+
+.main-color {
+  color: #fcb900;
+}
+
+.bg-main {
+  background-color: #fcb900;
+}
+
+.secondary-color {
+  color: #ff6900;
+}
+
+.bg-secondary {
+  background-color: #ff6900;
+}

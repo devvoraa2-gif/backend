@@ -3,12 +3,12 @@ import Admin from "./components/Admin/Admin";
 import Customers from "./components/Admin/Customers";
 import Dashboard from "./components/Admin/Dashboard";
 import Packages from "./components/Admin/Packages";
-import Signup from "./components/Auth/Signup/Signup";
+// import Signup from "./components/Auth/Signup/Signup";
 import Signin from "./components/Auth/Signin/Signin";
-import ConfirmEmail from "./components/Auth/ConfirmEmail";
+// import ConfirmEmail from "./components/Auth/ConfirmEmail";
 import ProtectedRoute from "./components/Auth/ProtectedRoute";
-import ForgotPassword from "./components/Auth/ForgotPassword";
-import ResetPassword from "./components/Auth/ResetPassword";
+// import ForgotPassword from "./components/Auth/ForgotPassword";
+// import ResetPassword from "./components/Auth/ResetPassword";
 import { LoaderProvider } from "./context/LoaderContext";
 import Calender from './components/Calender/Calender.jsx'
 
@@ -18,11 +18,11 @@ function App() {
     <LoaderProvider>
       <Routes>
         <Route path="/" element={<Navigate to="/admin" replace />} />
-        <Route path="/register" element={<Signup />} />
+        {/* <Route path="/register" element={<Signup />} /> */}
         <Route path="/login" element={<Signin />} />
-        <Route path="/confirm-email" element={<ConfirmEmail />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/reset-password" element={<ResetPassword />} />   
+        {/* <Route path="/confirm-email" element={<ConfirmEmail />} /> */}
+        {/* <Route path="/forgot-password" element={<ForgotPassword />} /> */}
+        {/* <Route path="/reset-password" element={<ResetPassword />} />    */}
 
 
         {/* Admin protected */}

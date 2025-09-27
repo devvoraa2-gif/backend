@@ -23,11 +23,7 @@ const Signin = () => {
       const { data } = await apiClient.post("/api/v1/auth/login", form);
 
       if (data.Success) {
-        // save tokens in localStorage
         localStorage.setItem("accessToken", data.Data.AccessToken);
-        localStorage.setItem("refreshToken", data.Data.RefreshToken);
-
-        // redirect to admin
         navigate("/admin");
       } else {
         setError(data.Message || "Invalid credentials");
@@ -85,16 +81,6 @@ const Signin = () => {
             className="w-full p-3 border border-white rounded-lg bg-white/10 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-yellow-400"
           />
 
-          {/* Forgot password link */}
-          {/* <div className="text-right">
-            <Link
-              to="/forgot-password"
-              className="text-sm text-white opacity-90 hover:underline"
-            >
-              Forgot password?
-            </Link>
-          </div> */}
-
           <button
             type="submit"
             disabled={loading}
@@ -113,16 +99,6 @@ const Signin = () => {
         </form>
 
         {error && <p className="text-red-600 text-sm mt-3">{error}</p>}
-
-        {/* <p className="text-sm text-gray-800 mt-4 text-center">
-          Don’t have an account?{" "}
-          <Link
-            to="/register"
-            className="text-white opacity-80 font-medium hover:underline"
-          >
-            Sign up
-          </Link>
-        </p> */}
       </div>
     </motion.div>
   );
